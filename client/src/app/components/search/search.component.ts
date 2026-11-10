@@ -17,6 +17,7 @@ export class SearchComponent implements OnInit {
   searchCategory:string = 'artist';
   searchCategories:string[] = ['artist', 'album', 'track'];
   resources:ResourceData[];
+  resultCategory:string; // category of the *displayed* results, so changing the dropdown doesn't break the view
 
   constructor(private spotifyService:SpotifyService) { }
 
@@ -24,7 +25,11 @@ export class SearchComponent implements OnInit {
   }
 
   search() {
-    //TODO: call search function in spotifyService and parse response
+    const category = this.searchCategory;
+    this.spotifyService.searchFor(category, this.searchString).then((results) => {
+      this.resources = results;
+      this.resultCategory = category;
+    });
   }
 
 }
